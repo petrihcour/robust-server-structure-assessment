@@ -8,9 +8,7 @@ function list(req, res, next) {
 
 // POST /urls Create a new short URL, 201 created
 // POST { data: {"href":"www.some-url.com"} } to /urls should assign an id to the object, save it, and return the saved object as a response to the client.
-
 // const newUseId = uses.length + 1;
-
 // { "data": { "href": "http://www.toooop.com" } }
 
 function create(req, res, next) {
@@ -60,6 +58,15 @@ function read(req, res, next) {
 }
 
 // PUT /urls/:urlId Update short URL by ID
+function update(req, res, next) {
+  const { url } = res.locals;
+  const { data: { href } = {} } = req.body;
+  
+  url.href = href;
+  
+  res.json({ data: url });
+}
+
 
 // DELETE /urls/:urlId deletes specific urlId, 405 Method Not allowed, "errors": "DELETE Method not allowed on /urls/2"
 
@@ -67,4 +74,5 @@ module.exports = {
   create,
   list,
   read: [validateUrlId, createUseRecord, read],
+  update: [validateUrlId, update],
 };
