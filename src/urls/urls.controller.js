@@ -91,5 +91,6 @@ module.exports = {
   list,
   read: [validateUrlId, createUseRecord, read],
   update: [validateUrlId, update],
+  validateUrlId,
   methodNotAllowed,
 };

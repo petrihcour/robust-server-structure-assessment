@@ -6,7 +6,7 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 // *** Time Property, Use Date.now() to assign the time property of uses.
 
 
-// MIDDLEWARE - If a POST request is made on /uses, error message should read: "errors: specificMethod not allowed on specificPath", 405 method not allowed 
+
 
 // MIDDLEWARE - If a PUT request is made on /uses/:useId, error message should read: "errors: specificMethod not allowed on specificPath", 405 method not allowed 
 
@@ -17,7 +17,9 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 
 // GET /uses Retrieve a list of all use metrics
 function list(req, res, next) {
-    res.send({ data: uses });
+    const urlId = Number(req.params.urlId);
+    const urlUses = uses.filter(urlId ? (use) => use.urlId == urlId : () => true);
+    res.json({ data: urlUses });
 }
 
 function validateUseId(req, res, next) {
@@ -40,16 +42,25 @@ function read(req, res, next) {
 }
 
 // POST 
-// NOT ALLOWED THROUGH USES POST. ONLY THROUGH URLS/:URLID GET REQ
+// MIDDLEWARE - If a POST request is made on /uses, error message should read: "errors: specificMethod not allowed on specificPath", 405 method not allowed 
 function create(req, res, next) {
     methodNotAllowed(req, res, next);
 }
 
 
 // DELETE /uses/:useId Delete a use metric by ID, Status 204 No Content 
+function destroy(req, res, next) {
+    const useId = Number(req.params.useId)
+    const index = uses.findIndex((use) => use.id === useId);
+    if (index > -1) {
+        uses.splice(index, 1);
+    }
+    res.sendStatus(204);
+}
 
 module.exports = {
     list,
     read: [validateUseId, read],
+    delete: [validateUseId, destroy],
     methodNotAllowed,
 };
