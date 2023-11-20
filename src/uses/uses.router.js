@@ -5,4 +5,6 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 
 // use mergeparams to GET /urls/:urlId/uses to Retrieve a list of use metrics for a given short URL ID
 
+router.route("/").get(controller.list).all(methodNotAllowed);
+
 module.exports = router;

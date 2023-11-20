@@ -15,6 +15,9 @@ const uses = require("../data/uses-data");
 
 
 // GET /uses Retrieve a list of all use metrics
+function list(req, res, next) {
+    res.send({ data: uses });
+}
 
 
 // GET /uses/:useId retrieve use metric by specified ID
@@ -23,5 +26,5 @@ const uses = require("../data/uses-data");
 // DELETE /uses/:useId Delete a use metric by ID, Status 204 No Content 
 
 module.exports = {
-
+    list,
 };

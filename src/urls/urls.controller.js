@@ -29,6 +29,22 @@ function validateUrlId(req, res, next) {
 
 // GET /urls/:urlId Retrieve a short URL by specific ID
 // *** USE RECORDS ARE CREATED AS A SIDE EFFECT OF THIS 'GET' REQUEST
+function createUseRecord(req, res, next) {
+  const { url } = res.locals;
+  
+  // use record as a side effect 
+  const newUseRecord = {
+    id: uses.length + 1,
+    urlId: url.id,
+    time: Date.now(),
+  }
+
+  uses.push(newUseRecord);
+  res.locals.useRecord = newUseRecord;
+  next();
+}
+
+
 function read(req, res, next) {
   res.json({ data: res.locals.url });
 }
@@ -39,5 +55,5 @@ function read(req, res, next) {
 
 module.exports = {
   list,
-  read: [validateUrlId, read],
+  read: [validateUrlId, createUseRecord, read],
 };

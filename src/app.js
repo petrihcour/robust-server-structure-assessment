@@ -6,6 +6,7 @@ const usesRouter = require("./uses/uses.router");
 app.use(express.json());
 
 app.use("/urls", urlsRouter);
+app.use("/uses", usesRouter);
 
 // TODO: Add code to meet the requirements and make the tests pass.
 
