@@ -1,4 +1,5 @@
 const uses = require("../data/uses-data");
+const methodNotAllowed = require("../errors/methodNotAllowed");
 
 // *** USE RECORDS THROUGH API ARE NOT ALLOWED! USE RECORDS ARE CREATED AS SIDE EFFECT OF A 'GET' REQUEST TO /URLS/:URLID
 
@@ -20,11 +21,15 @@ function list(req, res, next) {
 }
 
 
-// GET /uses/:useId retrieve use metric by specified ID
-
+// GET /uses/:useId retrieve use metric by specified ID.
+// NOT ALLOWED THROUGH USES POST. ONLY THROUGH URLS/:URLID GET REQ
+function create(req, res, next) {
+    methodNotAllowed(req, res, next);
+}
 
 // DELETE /uses/:useId Delete a use metric by ID, Status 204 No Content 
 
 module.exports = {
     list,
+    methodNotAllowed,
 };
