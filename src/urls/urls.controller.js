@@ -1,5 +1,6 @@
 const urls = require("../data/urls-data");
 const uses = require("../data/uses-data");
+const methodNotAllowed = require("../errors/methodNotAllowed");
 
 // GET /urls Retrieve a list of all short URLs
 function list(req, res, next) {
@@ -19,6 +20,18 @@ function create(req, res, next) {
   }
   urls.push(newUrl);
   res.status(201).json({ data: newUrl })
+}
+
+// missing href 
+function hasUrl(req, res, next) {
+  const { data: { href } = {} } = req.body;
+  if (href) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `An 'href' property is required.`
+  });
 }
 
 // validate urlId
@@ -69,10 +82,14 @@ function update(req, res, next) {
 
 
 // DELETE /urls/:urlId deletes specific urlId, 405 Method Not allowed, "errors": "DELETE Method not allowed on /urls/2"
+function destroy(req, res, next) {
+  methodNotAllowed(req, res, next);
+}
 
 module.exports = {
-  create,
+  create: [hasUrl, create],
   list,
   read: [validateUrlId, createUseRecord, read],
   update: [validateUrlId, update],
+  methodNotAllowed,
 };
