@@ -12,7 +12,18 @@ app.use("/urls", urlsRouter);
 // ERROR HANDLERS
 
 // Return 404 error for any nonexistent path or resource
+app.use((req, res, next) => {
+    return next({
+        status: 404, 
+        message: `Not found: ${req.originalUrl}`
+    });
+});
 
 // Methods that are not allowed should return 405
+app.use((error, req, res, next) => {
+    console.error(error);
+    const { status = 500, message = "Something went wrong!" } = error;
+    res.status(status).json({ error: message });
+});
 
 module.exports = app;
