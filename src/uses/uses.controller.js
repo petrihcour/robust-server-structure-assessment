@@ -20,16 +20,36 @@ function list(req, res, next) {
     res.send({ data: uses });
 }
 
+function validateUseId(req, res, next) {
+    const useId = Number(req.params.useId);
+    const foundUseId = uses.find(use => use.id === useId);
+    if (foundUseId) {
+        res.locals.use = foundUseId;
+        return next();
+    } 
+    next({
+        status: 404, 
+        message: `Use ID not found: ${useId}`
+    })
+}
+
 
 // GET /uses/:useId retrieve use metric by specified ID.
+function read(req, res, next) {
+    res.json({ data: res.locals.use })
+}
+
+// POST 
 // NOT ALLOWED THROUGH USES POST. ONLY THROUGH URLS/:URLID GET REQ
 function create(req, res, next) {
     methodNotAllowed(req, res, next);
 }
 
+
 // DELETE /uses/:useId Delete a use metric by ID, Status 204 No Content 
 
 module.exports = {
     list,
+    read: [validateUseId, read],
     methodNotAllowed,
 };
