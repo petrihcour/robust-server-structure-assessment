@@ -1,3 +1,5 @@
+const uses = require("../data/uses-data");
+
 // *** USE RECORDS THROUGH API ARE NOT ALLOWED! USE RECORDS ARE CREATED AS SIDE EFFECT OF A 'GET' REQUEST TO /URLS/:URLID
 
 // *** Time Property, Use Date.now() to assign the time property of uses.
@@ -20,3 +22,6 @@
 
 // DELETE /uses/:useId Delete a use metric by ID, Status 204 No Content 
 
+module.exports = {
+
+};
