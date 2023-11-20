@@ -1,6 +1,9 @@
 const urls = require("../data/urls-data");
 
 // GET /urls Retrieve a list of all short URLs
+function list(req, res, next) {
+    res.send({ data: urls });
+}
 
 
 // POST /urls Create a new short URL, 201 created
@@ -21,7 +24,7 @@ const urls = require("../data/urls-data");
 // DELETE /urls/:urlId deletes specific urlId, 405 Method Not allowed, "errors": "DELETE Method not allowed on /urls/2"
 
 module.exports = {
-
+    list,
 };
 
 
